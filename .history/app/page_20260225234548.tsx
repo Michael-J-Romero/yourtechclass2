@@ -23,12 +23,12 @@ import {
   Paper,
   Link,
 } from "@mui/material";
-import TerminalIcon from "@mui/icons-material/Terminal";
+import CodeIcon from "@mui/icons-material/Code";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SchoolIcon from "@mui/icons-material/School";
 import PersonIcon from "@mui/icons-material/Person";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import MailIcon from "@mui/icons-material/Mail";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import AccessTimeIcon from "@mui/icons-material/WatchLater";
 import StarIcon from "@mui/icons-material/Star";
@@ -144,7 +144,7 @@ export default function Home() {
       {/* Navigation */}
       <AppBar position="sticky" color="primary" elevation={2}>
         <Toolbar>
-          <TerminalIcon sx={{ mr: 1 }} />
+          <CodeIcon sx={{ mr: 1 }} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 700 }}>
             YourTechClass
           </Typography>
@@ -168,7 +168,7 @@ export default function Home() {
         }}
       >
         <Container maxWidth="md">
-          <TerminalIcon sx={{ fontSize: 64, mb: 2, opacity: 0.9 }} />
+          <CodeIcon sx={{ fontSize: 64, mb: 2, opacity: 0.9 }} />
           <Typography variant="h2" component="h1" fontWeight={800} gutterBottom>
             Learn to Code at Your Local Library
           </Typography>
@@ -344,8 +344,8 @@ export default function Home() {
                 <List>
                   {ONE_ON_ONE_BENEFITS.map((benefit) => (
                     <ListItem key={benefit} disableGutters sx={{ py: 0.5 }}>
-                        <ListItemIcon sx={{ minWidth: 36 }}>
-                        <TaskAltIcon sx={{ color: "white" }} />
+                      <ListItemIcon sx={{ minWidth: 36 }}>
+                        <CheckCircleIcon sx={{ color: "white" }} />
                       </ListItemIcon>
                       <ListItemText
                         primary={benefit}
@@ -437,7 +437,7 @@ export default function Home() {
                     size="large"
                     fullWidth
                     sx={{ py: 1.5, fontWeight: 700 }}
-                    startIcon={<MailIcon />}
+                    startIcon={<EmailIcon />}
                   >
                     Send Message
                   </Button>
@@ -455,7 +455,7 @@ export default function Home() {
       >
         <Container maxWidth="md">
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1, mb: 1 }}>
-            <TerminalIcon sx={{ color: "primary.light" }} />
+            <CodeIcon sx={{ color: "primary.light" }} />
             <Typography variant="h6" color="white" fontWeight={700}>
               YourTechClass
             </Typography>
@@ -465,7 +465,7 @@ export default function Home() {
           </Typography>
           <Box sx={{ display: "flex", justifyContent: "center", gap: 3, mt: 1, flexWrap: "wrap" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-              <MailIcon fontSize="small" />
+              <EmailIcon fontSize="small" />
               <Link href="mailto:info@yourtechclass.org" color="inherit" underline="hover">
                 info@yourtechclass.org
               </Link>
