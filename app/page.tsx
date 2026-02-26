@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   AppBar,
   Toolbar,
@@ -34,6 +35,73 @@ import {
   AccessTime as AccessTimeIcon,
   Star as StarIcon,
 } from "@mui/icons-material";
+
+/** A section whose background image scrolls at a different rate than its
+ *  content, creating a parallax effect via Framer Motion. */
+function ParallaxSection({
+  children,
+  imageSrc,
+  overlayColor = "rgba(0,0,0,0.55)",
+  minHeight,
+  id,
+  py,
+}: {
+  children: React.ReactNode;
+  imageSrc: string;
+  overlayColor?: string;
+  minHeight?: string | number;
+  id?: string;
+  py?: number | Partial<Record<"xs" | "sm" | "md" | "lg" | "xl", number>>;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  // Move the background image between -20% and +20% as the section passes through the viewport
+  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+
+  return (
+    <Box
+      id={id}
+      ref={ref}
+      sx={{
+        position: "relative",
+        overflow: "hidden",
+        ...(minHeight !== undefined ? { minHeight } : {}),
+        ...(py !== undefined ? { py } : {}),
+        color: "white",
+      }}
+    >
+      {/* Parallax background layer */}
+      <motion.div
+        style={{
+          y,
+          position: "absolute",
+          top: "-20%",
+          left: 0,
+          right: 0,
+          bottom: "-20%",
+          backgroundImage: `url(${imageSrc})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          zIndex: 0,
+        }}
+      />
+      {/* Color overlay so text remains legible */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          background: overlayColor,
+          zIndex: 1,
+        }}
+      />
+      {/* Content */}
+      <Box sx={{ position: "relative", zIndex: 2 }}>{children}</Box>
+    </Box>
+  );
+}
 
 const LOCATIONS = [
   {
@@ -161,15 +229,13 @@ export default function Home() {
       </AppBar>
 
       {/* Hero */}
-      <Box
-        sx={{
-          background: "linear-gradient(135deg, #1565c0 0%, #0d47a1 60%, #311b92 100%)",
-          color: "white",
-          py: { xs: 8, md: 14 },
-          textAlign: "center",
-        }}
+      <ParallaxSection
+        imageSrc="/hero-bg.jpg"
+        overlayColor="linear-gradient(135deg, rgba(21,101,192,0.80) 0%, rgba(13,71,161,0.82) 60%, rgba(49,27,146,0.82) 100%)"
+        py={{ xs: 8, md: 14 }}
+        minHeight="480px"
       >
-        <Container maxWidth="md">
+        <Container maxWidth="md" sx={{ textAlign: "center" }}>
           <CodeIcon sx={{ fontSize: 64, mb: 2, opacity: 0.9 }} />
           <Typography variant="h2" component="h1" fontWeight={800} gutterBottom>
             Learn to Code at Your Local Library
@@ -207,7 +273,7 @@ export default function Home() {
             </Button>
           </Box>
         </Container>
-      </Box>
+      </ParallaxSection>
 
       {/* Programs */}
       <Box id="programs" sx={{ py: 8, bgcolor: "grey.50" }}>
@@ -312,7 +378,12 @@ export default function Home() {
       </Box>
 
       {/* One-on-One */}
-      <Box id="one-on-one" sx={{ py: 8, bgcolor: "primary.main", color: "white" }}>
+      <ParallaxSection
+        id="one-on-one"
+        imageSrc="/tutoring-bg.jpg"
+        overlayColor="rgba(13,71,161,0.82)"
+        py={8}
+      >
         <Container maxWidth="lg">
           <Grid container spacing={6} alignItems="center">
             <Grid size={{ xs: 12, md: 6 }}>
@@ -360,7 +431,7 @@ export default function Home() {
             </Grid>
           </Grid>
         </Container>
-      </Box>
+      </ParallaxSection>
 
       {/* Contact Form */}
       <Box id="contact" sx={{ py: 8, bgcolor: "grey.50" }}>
