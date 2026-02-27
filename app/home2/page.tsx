@@ -166,7 +166,7 @@ export default function HomePage() {
       {/* VISUAL TRUST SECTION */}
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <Grid container spacing={4}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box
               component="img"
               src="/img/2.jpg"
@@ -186,7 +186,7 @@ export default function HomePage() {
               Workshops, camps, and small-group programs
             </Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box
               component="img"
               src="/img/3.jpg"
@@ -206,7 +206,7 @@ export default function HomePage() {
               Students ages 8–16
             </Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box
               component="img"
               src="/img/4.jpg"
@@ -226,7 +226,7 @@ export default function HomePage() {
               Project-based learning environments
             </Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box
               component="img"
               src="/img/5.jpg"
@@ -299,7 +299,7 @@ export default function HomePage() {
                   "Express creativity through interactive media and digital tools",
               },
             ].map((item, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
                 <Card
                   sx={{
                     height: "100%",
@@ -382,7 +382,7 @@ export default function HomePage() {
                 "Flexible short-term offerings including themed workshops, summer camps, and intensive project-based sessions.",
             },
           ].map((program, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid size={{ xs: 12, md: 4 }} key={index}>
               <Card
                 sx={{
                   height: "100%",
@@ -455,7 +455,7 @@ export default function HomePage() {
       {/* ABOUT INSTRUCTOR */}
       <Container maxWidth="lg" sx={{ py: 10 }}>
         <Grid container spacing={6} alignItems="center">
-          <Grid item xs={12} md={5}>
+          <Grid size={{ xs: 12, md: 5 }}>
             <Box
               component="img"
               src="/img/6.jpg"
@@ -467,7 +467,7 @@ export default function HomePage() {
               }}
             />
           </Grid>
-          <Grid item xs={12} md={7}>
+          <Grid size={{ xs: 12, md: 7 }}>
             <Typography
               variant="h2"
               sx={{
@@ -538,7 +538,7 @@ export default function HomePage() {
                 text: "Flexible meeting formats (libraries, community spaces, online)",
               },
             ].map((item, index) => (
-              <Grid item xs={12} key={index}>
+              <Grid size={{ xs: 12 }} key={index}>
                 <Paper
                   elevation={0}
                   sx={{
@@ -625,7 +625,7 @@ export default function HomePage() {
           <Paper elevation={3} sx={{ p: { xs: 3, md: 5 } }}>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     fullWidth
                     required
@@ -635,7 +635,7 @@ export default function HomePage() {
                     onChange={handleInputChange}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     fullWidth
                     required
@@ -646,7 +646,7 @@ export default function HomePage() {
                     onChange={handleInputChange}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     fullWidth
                     required
@@ -656,7 +656,7 @@ export default function HomePage() {
                     onChange={handleInputChange}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     fullWidth
                     select
@@ -671,7 +671,7 @@ export default function HomePage() {
                     <MenuItem value="some">Some experience</MenuItem>
                   </TextField>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     select
@@ -687,7 +687,7 @@ export default function HomePage() {
                     <MenuItem value="unsure">Unsure</MenuItem>
                   </TextField>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     label="Neighborhood or School (Optional)"
@@ -696,7 +696,7 @@ export default function HomePage() {
                     onChange={handleInputChange}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     multiline
@@ -707,7 +707,7 @@ export default function HomePage() {
                     onChange={handleInputChange}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Button
                     type="submit"
                     variant="contained"
