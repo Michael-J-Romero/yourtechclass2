@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import {
   AppBar,
   Toolbar,
@@ -8,146 +9,115 @@ import {
   Button,
   Box,
   Container,
-  Grid,
-  Card,
-  CardContent,
-  CardHeader,
-  TextField,
-  Snackbar,
-  Alert,
-  Divider,
+  Link,
+  Drawer,
+  IconButton,
   List,
   ListItem,
-  ListItemIcon,
+  ListItemButton,
   ListItemText,
-  Paper,
-  Link,
 } from "@mui/material";
 import TerminalIcon from "@mui/icons-material/Terminal";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import SchoolIcon from "@mui/icons-material/School";
-import PersonIcon from "@mui/icons-material/Person";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
+// NOTE: Verify icon names in node_modules/@mui/icons-material/esm/index.js before adding new imports.
+import { useTheme } from "@mui/material/styles";
+import { ColorModeContext } from "./providers/ThemeProvider";
 import MailIcon from "@mui/icons-material/Mail";
 import PhoneIcon from "@mui/icons-material/Phone";
-import AccessTimeIcon from "@mui/icons-material/WatchLater";
-import StarIcon from "@mui/icons-material/Star";
-
-const LOCATIONS = [
-  {
-    name: "Central Library – LAPL",
-    address: "630 W 5th St, Los Angeles, CA 90071",
-    days: "Tuesdays & Thursdays",
-    time: "3:30 PM – 5:30 PM",
-    ages: "Ages 8–18",
-    description:
-      "Our flagship downtown location. Hands-on projects covering Scratch, Python, and web development in LAPL's Digital Gymnasium.",
-  },
-  {
-    name: "Boyle Heights Branch Library",
-    address: "2808 Cesar E Chavez Ave, Los Angeles, CA 90033",
-    days: "Mondays & Wednesdays",
-    time: "4:00 PM – 6:00 PM",
-    ages: "Ages 10–18",
-    description:
-      "Serving East LA students with game design, app building, and coding fundamentals. Bilingual instructors available.",
-  },
-  {
-    name: "Mar Vista Branch Library",
-    address: "12006 Venice Blvd, Los Angeles, CA 90066",
-    days: "Saturdays",
-    time: "10:00 AM – 12:00 PM",
-    ages: "Ages 7–14",
-    description:
-      "Weekend explorers learn coding through creative storytelling, animation, and beginner robotics.",
-  },
-  {
-    name: "Leimert Park Branch Library",
-    address: "4312 43rd Pl, Los Angeles, CA 90008",
-    days: "Tuesdays & Fridays",
-    time: "3:30 PM – 5:30 PM",
-    ages: "Ages 8–18",
-    description:
-      "Coding meets community. Students collaborate on local-impact projects while mastering JavaScript and HTML/CSS.",
-  },
-  {
-    name: "Sherman Oaks Branch Library",
-    address: "14245 Moorpark St, Sherman Oaks, CA 91423",
-    days: "Mondays & Thursdays",
-    time: "4:00 PM – 6:00 PM",
-    ages: "Ages 8–16",
-    description:
-      "San Fernando Valley students dive into Python, web development, and introduction to AI concepts.",
-  },
-  {
-    name: "East Los Angeles Library",
-    address: "4837 3rd St, Los Angeles, CA 90022",
-    days: "Wednesdays & Fridays",
-    time: "3:30 PM – 5:30 PM",
-    ages: "Ages 10–18",
-    description:
-      "Advanced tracks available for returning students. Topics include data science, APIs, and version control with Git.",
-  },
-];
-
-const ONE_ON_ONE_BENEFITS = [
-  "Curriculum tailored to your child's learning pace and interests",
-  "Flexible scheduling — weekdays or weekends, in-person or virtual",
-  "Regular progress reports and goal-setting sessions",
-  "Preparation for competitions like Hackathons, Science Fairs, and FIRST Robotics",
-  "College application portfolio support for high-school students",
-  "Expert instructors with backgrounds in industry and education",
-];
+import ProgramInfo from "./sections/ProgramInfo2";
+import LocationOutreach from "./sections/LocationOutreach";
+import FaqSection from "./sections/FaqSection";
+import ContactFormSection from "./sections/ContactFormSection";
+import InstructorProfile from "./sections/InstructorProfile";
 
 const NAV_LINKS = [
   { label: "Programs", href: "#programs" },
-  { label: "Locations", href: "#locations" },
-  { label: "One-on-One", href: "#one-on-one" },
+  { label: "About", href: "#about" },
+  { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];
 
+type SectionDividerProps = {
+  height?: number;
+  curve?: number;
+  tilt?: number;
+  flip?: boolean;
+  color?: string;
+};
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function SectionDivider({
+  height = 120,
+  curve = 0,
+  tilt = 0,
+  flip = false,
+  color = "#f5f5f5",
+}: SectionDividerProps) {
+  const baseY = height * 0.45;
+  const leftY = clamp(baseY + tilt / 2, 0, height);
+  const rightY = clamp(baseY - tilt / 2, 0, height);
+  const controlY = clamp(baseY + curve, 0, height);
+
+  return (
+    <Box
+      sx={{
+        lineHeight: 0,
+        m: 0,
+        p: 0,
+        overflow: "hidden",
+        transform: flip ? "rotate(180deg)" : "none",
+      }}
+    >
+      <svg
+        viewBox={`0 0 1440 ${height}`}
+        preserveAspectRatio="none"
+        width="100%"
+        height={height}
+        style={{ display: "block", verticalAlign: "top" }}
+      >
+        <path
+          fill={color}
+          d={`M0,${leftY} Q720,${controlY} 1440,${rightY} L1440,${height} L0,${height} Z`}
+        />
+      </svg>
+    </Box>
+  );
+}
+
 export default function Home() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
-  }
-
-  function validate() {
-    const newErrors: Record<string, string> = {};
-    if (!form.name.trim()) newErrors.name = "Name is required.";
-    if (!form.email.trim()) {
-      newErrors.email = "Email is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = "Enter a valid email address.";
-    }
-    if (!form.message.trim()) newErrors.message = "Message is required.";
-    return newErrors;
-  }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-    setSubmitted(true);
-    setForm({ name: "", email: "", phone: "", message: "" });
-  }
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { scrollY } = useScroll();
+  const prefersReducedMotion = useReducedMotion();
+  const heroParallaxY = useTransform(scrollY, [0, 700], [0, 140]);
+  const heroScale = useTransform(scrollY, [0, 700], [1, 1.08]);
+  const colorMode = useContext(ColorModeContext);
+  const theme = useTheme();
+  const sectionColors =
+    theme.palette.mode === "dark"
+      ? { cool: theme.palette.background.default, warm: theme.palette.background.paper }
+      : { cool: "#e9f1ff", warm: "#fff1e3" };
 
   return (
     <>
-      {/* Navigation */}
       <AppBar position="sticky" color="primary" elevation={2}>
         <Toolbar>
           <TerminalIcon sx={{ mr: 1 }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 700 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 700, color: 'secondary.main' }}>
             YourTechClass
           </Typography>
+          {/* Dark mode toggle */}
+          <IconButton
+            color="inherit"
+            onClick={() => colorMode.toggleColorMode()}
+            sx={{ ml: 1, display: { xs: "none", md: "inline-flex" } }}
+            aria-label="Toggle dark mode"
+          >
+            <Typography sx={{ fontSize: "0.85rem", fontWeight: 700 }}>
+              {theme.palette.mode === "light" ? "Dark" : "Light"}
+            </Typography>
+          </IconButton>
           <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 1 }}>
             {NAV_LINKS.map((link) => (
               <Button key={link.label} color="inherit" href={link.href} component={Link}>
@@ -155,304 +125,141 @@ export default function Home() {
               </Button>
             ))}
           </Box>
+          <IconButton
+            color="inherit"
+            edge="end"
+            onClick={() => setMobileMenuOpen(true)}
+            sx={{ display: { xs: "flex", sm: "none" } }}
+          >
+            <Typography sx={{ fontSize: "1.5rem" }}>☰</Typography>
+          </IconButton>
         </Toolbar>
       </AppBar>
 
-      {/* Hero */}
+      <Drawer
+        anchor="right"
+        open={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        sx={{ display: { xs: "block", sm: "none" } }}
+      >
+        <Box sx={{ width: 250, pt: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", px: 2, pb: 1 }}>
+            <IconButton onClick={() => setMobileMenuOpen(false)}>
+              <Typography sx={{ fontSize: "1.5rem" }}>✕</Typography>
+            </IconButton>
+          </Box>
+          <List>
+            {NAV_LINKS.map((link) => (
+              <ListItem key={link.label} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <ListItemText primary={link.label} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
+
       <Box
         sx={{
-          background: "linear-gradient(135deg, #1565c0 0%, #0d47a1 60%, #311b92 100%)",
+          position: "relative",
+          overflow: "hidden",
           color: "white",
-          py: { xs: 8, md: 14 },
+          py: { xs: 12, md: 18 },
           textAlign: "center",
+          minHeight: { xs: 520, md: 680 },
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        <Container maxWidth="md">
-          <TerminalIcon sx={{ fontSize: 64, mb: 2, opacity: 0.9 }} />
+        <Box
+          component={motion.div}
+          sx={{
+            position: "absolute",
+            inset: "-8% 0",
+            backgroundImage: "url(/img/1.jpg)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            willChange: "transform",
+            zIndex: 0,
+          }}
+          style={prefersReducedMotion ? undefined : { y: heroParallaxY, scale: heroScale }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.55) 100%)",
+            zIndex: 0,
+          }}
+        />
+        <Container maxWidth="md" sx={{ position: "relative", zIndex: 1 }}>
           <Typography variant="h2" component="h1" fontWeight={800} gutterBottom>
-            Learn to Code at Your Local Library
+            Creative Coding Programs for Kids & Teens
           </Typography>
-          <Typography variant="h5" sx={{ opacity: 0.9, mb: 4, lineHeight: 1.6 }}>
-            Free afterschool coding groups for youth across{" "}
-            <strong>Los Angeles</strong>. Six library locations, experienced
-            instructors, and a passion for empowering the next generation of
-            tech creators.
+          <Typography variant="h6" sx={{ opacity: 0.95, mb: 4, lineHeight: 1.6 }}>
+            Students learn by building games and interactive projects in small,
+            supportive environments across Los Angeles.
           </Typography>
-          <Box sx={{ display: "flex", gap: 2, justifyContent: "center", flexWrap: "wrap" }}>
-            <Button
-              variant="contained"
-              size="large"
-              href="#locations"
-              component={Link}
-              sx={{
-                bgcolor: "white",
-                color: "primary.main",
-                fontWeight: 700,
-                px: 4,
-                "&:hover": { bgcolor: "grey.100" },
-              }}
-            >
-              Find a Location
-            </Button>
-            <Button
-              variant="outlined"
-              size="large"
-              href="#contact"
-              component={Link}
-              sx={{ color: "white", borderColor: "white", px: 4, "&:hover": { borderColor: "grey.300" } }}
-            >
-              Contact Us
-            </Button>
-          </Box>
-        </Container>
-      </Box>
-
-      {/* Programs */}
-      <Box id="programs" sx={{ py: 8, bgcolor: "grey.50" }}>
-        <Container maxWidth="lg">
-          <Typography variant="h3" component="h2" textAlign="center" fontWeight={700} gutterBottom>
-            Our Programs
-          </Typography>
-          <Typography
-            variant="body1"
-            textAlign="center"
-            color="text.secondary"
-            sx={{ mb: 6, maxWidth: 600, mx: "auto" }}
+          <Button
+            variant="contained"
+            size="large"
+            href="#contact"
+            component={Link}
+            sx={{
+              bgcolor: theme.palette.mode === "dark" ? "secondary.main" : "white",
+              color: theme.palette.mode === "dark" ? "grey.900" : "primary.main",
+              fontWeight: 700,
+              px: 4,
+            }}
           >
-            Whether joining an afterschool group or booking private sessions, every
-            student gets hands-on experience writing real code from day one.
-          </Typography>
-          <Grid container spacing={4} justifyContent="center">
-            {[
-              {
-                icon: <SchoolIcon fontSize="large" color="primary" />,
-                title: "Afterschool Groups",
-                desc: "Small-group sessions held at LA libraries, open to all skill levels. Students work on projects together in a fun, collaborative environment.",
-              },
-              {
-                icon: <PersonIcon fontSize="large" color="secondary" />,
-                title: "One-on-One Lessons",
-                desc: "Personalized instruction designed around your child's goals. Flexible scheduling and custom curricula for maximum progress.",
-              },
-              {
-                icon: <StarIcon fontSize="large" sx={{ color: "warning.main" }} />,
-                title: "Project Showcases",
-                desc: "Students present their creations at end-of-semester showcases — building confidence and a real portfolio of work.",
-              },
-            ].map((item) => (
-              <Grid key={item.title} size={{ xs: 12, sm: 6, md: 4 }}>
-                <Card elevation={2} sx={{ height: "100%", textAlign: "center", p: 2 }}>
-                  <CardContent>
-                    <Box sx={{ mb: 2 }}>{item.icon}</Box>
-                    <Typography variant="h6" fontWeight={700} gutterBottom>
-                      {item.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {item.desc}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+            Request Program Info
+          </Button>
         </Container>
+        <Box
+          sx={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: -1,
+            zIndex: 2,
+            pointerEvents: "none",
+          }}
+        >
+          {/* <SectionDivider r={0} color={SECTION_COLORS.cool} /> */}
+        </Box>
       </Box>
 
-      {/* Locations */}
-      <Box id="locations" sx={{ py: 8 }}>
-        <Container maxWidth="lg">
-          <Typography variant="h3" component="h2" textAlign="center" fontWeight={700} gutterBottom>
-            Library Locations
-          </Typography>
-          <Typography
-            variant="body1"
-            textAlign="center"
-            color="text.secondary"
-            sx={{ mb: 6, maxWidth: 600, mx: "auto" }}
-          >
-            We partner with the Los Angeles Public Library system to bring free
-            coding education to neighborhoods across LA County.
-          </Typography>
-          <Grid container spacing={3}>
-            {LOCATIONS.map((loc) => (
-              <Grid key={loc.name} size={{ xs: 12, sm: 6, md: 4 }}>
-                <Card elevation={3} sx={{ height: "100%" }}>
-                  <CardHeader
-                    avatar={<LocationOnIcon color="primary" />}
-                    title={
-                      <Typography variant="subtitle1" fontWeight={700}>
-                        {loc.name}
-                      </Typography>
-                    }
-                    subheader={loc.address}
-                  />
-                  <CardContent sx={{ pt: 0 }}>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      {loc.description}
-                    </Typography>
-                    <Divider sx={{ my: 1.5 }} />
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 0.5 }}>
-                      <AccessTimeIcon fontSize="small" color="action" />
-                      <Typography variant="body2">
-                        {loc.days} · {loc.time}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                      <SchoolIcon fontSize="small" color="action" />
-                      <Typography variant="body2">{loc.ages}</Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
+    
 
-      {/* One-on-One */}
-      <Box id="one-on-one" sx={{ py: 8, bgcolor: "primary.main", color: "white" }}>
-        <Container maxWidth="lg">
-          <Grid container spacing={6} alignItems="center">
-            <Grid size={{ xs: 12, md: 6 }}>
-              <PersonIcon sx={{ fontSize: 56, mb: 2, opacity: 0.9 }} />
-              <Typography variant="h3" component="h2" fontWeight={700} gutterBottom>
-                One-on-One Lessons
-              </Typography>
-              <Typography variant="body1" sx={{ opacity: 0.9, lineHeight: 1.8 }}>
-                Some learners thrive with dedicated individual attention. Our private
-                lessons pair your child with an expert instructor for a fully
-                personalized coding journey — at their pace, on their schedule.
-              </Typography>
-              <Button
-                variant="contained"
-                size="large"
-                href="#contact"
-                component={Link}
-                sx={{
-                  mt: 3,
-                  bgcolor: "white",
-                  color: "primary.main",
-                  fontWeight: 700,
-                  "&:hover": { bgcolor: "grey.100" },
-                }}
-              >
-                Book a Session
-              </Button>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Paper sx={{ p: 3, bgcolor: "rgba(255,255,255,0.1)", borderRadius: 2 }}>
-                <List>
-                  {ONE_ON_ONE_BENEFITS.map((benefit) => (
-                    <ListItem key={benefit} disableGutters sx={{ py: 0.5 }}>
-                        <ListItemIcon sx={{ minWidth: 36 }}>
-                        <TaskAltIcon sx={{ color: "white" }} />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={benefit}
-                        primaryTypographyProps={{ sx: { color: "white" } }}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+      <ProgramInfo colors={sectionColors} />
+      <SectionDivider
+        color={sectionColors.warm}
+        height={96}
+        tilt={9}
+        curve={-136}
+      />
+      
+      <LocationOutreach colors={sectionColors} />
 
-      {/* Contact Form */}
-      <Box id="contact" sx={{ py: 8, bgcolor: "grey.50" }}>
-        <Container maxWidth="sm">
-          <Typography variant="h3" component="h2" textAlign="center" fontWeight={700} gutterBottom>
-            Get in Touch
-          </Typography>
-          <Typography
-            variant="body1"
-            textAlign="center"
-            color="text.secondary"
-            sx={{ mb: 4 }}
-          >
-            Interested in our programs or want to book a one-on-one lesson? Fill
-            out the form below and we&apos;ll get back to you within one business day.
-          </Typography>
-          <Paper elevation={3} sx={{ p: { xs: 3, sm: 5 }, borderRadius: 2 }}>
-            <Box component="form" onSubmit={handleSubmit} noValidate>
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Full Name"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    error={!!errors.name}
-                    helperText={errors.name}
-                    required
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Email Address"
-                    name="email"
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    error={!!errors.email}
-                    helperText={errors.email}
-                    required
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Phone Number (optional)"
-                    name="phone"
-                    type="tel"
-                    value={form.phone}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Message"
-                    name="message"
-                    multiline
-                    rows={4}
-                    value={form.message}
-                    onChange={handleChange}
-                    error={!!errors.message}
-                    helperText={
-                      errors.message ||
-                      "Let us know which location or program you're interested in."
-                    }
-                    required
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    fullWidth
-                    sx={{ py: 1.5, fontWeight: 700 }}
-                    startIcon={<MailIcon />}
-                  >
-                    Send Message
-                  </Button>
-                </Grid>
-              </Grid>
-            </Box>
-          </Paper>
-        </Container>
-      </Box>
 
-      {/* Footer */}
-      <Box
-        component="footer"
-        sx={{ bgcolor: "grey.900", color: "grey.400", py: 4, textAlign: "center" }}
-      >
+      <InstructorProfile colors={sectionColors} />
+      <SectionDivider
+        flip
+        color={sectionColors.warm}
+        height={84}
+        tilt={-18}
+        curve={-90}
+      />
+      <ContactFormSection colors={sectionColors} />
+      <FaqSection colors={sectionColors} />
+
+      <Box component="footer" sx={{ bgcolor: "grey.900", color: "grey.400", py: 5, textAlign: "center" }}>
         <Container maxWidth="md">
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1, mb: 1 }}>
             <TerminalIcon sx={{ color: "primary.light" }} />
@@ -461,9 +268,9 @@ export default function Home() {
             </Typography>
           </Box>
           <Typography variant="body2" gutterBottom>
-            Bringing free coding education to Los Angeles libraries.
+            Flexible coding programs for students and adults: web, app, and game development.
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "center", gap: 3, mt: 1, flexWrap: "wrap" }}>
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 3, mt: 2, flexWrap: "wrap" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <MailIcon fontSize="small" />
               <Link href="mailto:info@yourtechclass.org" color="inherit" underline="hover">
@@ -474,24 +281,58 @@ export default function Home() {
               <PhoneIcon fontSize="small" />
               <Typography variant="body2">(213) 555-0100</Typography>
             </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+              <Typography variant="body2">📍 Los Angeles, CA</Typography>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+              <Link
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                color="inherit"
+                underline="hover"
+              >
+                Facebook
+              </Link>
+            </Box>
           </Box>
           <Typography variant="caption" sx={{ display: "block", mt: 2 }}>
-            © {new Date().getFullYear()} YourTechClass. All rights reserved.
+            Available for private lessons, small groups, summer programs, and charter collaborations.
           </Typography>
         </Container>
       </Box>
 
-      {/* Success Snackbar */}
-      <Snackbar
-        open={submitted}
-        autoHideDuration={6000}
-        onClose={() => setSubmitted(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      <Box
+        sx={{
+          position: "fixed",
+          right: 20,
+          bottom: 20,
+          zIndex: 1200,
+          display: { xs: "none", md: "block" },
+        }}
       >
-        <Alert severity="success" onClose={() => setSubmitted(false)} variant="filled">
-          Thank you! We&apos;ll be in touch soon.
-        </Alert>
-      </Snackbar>
+        <Button variant="contained" size="large" href="#contact" component={Link} sx={{ px: 3, fontWeight: 700 }}>
+          Book a Free Call
+        </Button>
+      </Box>
+
+      <Box
+        sx={{
+          position: "fixed",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          p: 1,
+          zIndex: 1200,
+          bgcolor: "rgba(0,0,0,0.72)",
+          display: { xs: "block", md: "none" },
+        }}
+      >
+        <Button variant="contained" fullWidth href="#contact" component={Link} sx={{ fontWeight: 700 }}>
+          Book a Free Call
+        </Button>
+      </Box>
+
     </>
   );
 }
