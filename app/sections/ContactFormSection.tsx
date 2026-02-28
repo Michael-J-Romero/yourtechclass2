@@ -92,12 +92,12 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
           Request Program Information
         </Typography>
         <Typography variant="body1" textAlign="center" color="text.secondary" sx={{ mb: 4 }}>
-          Share a few details and we will follow up within one business day. You can also use this
+          Tell me a little about yourself or your student and I’ll recommend the best starting option.
+          You can also use this
           form to contact us about hosting partnerships and new program locations.
         </Typography>
-        <Typography variant="body2" textAlign="center" color="text.secondary" sx={{ mb: 3 }}>
-          Rates are available by request and depend on format, schedule, and duration.
-        </Typography>
+
+
         <Paper elevation={3} sx={{ p: { xs: 3, sm: 4 }, borderRadius: 2 }}>
           <Box component="form" onSubmit={handleSubmit} noValidate>
             <Grid container spacing={2}>

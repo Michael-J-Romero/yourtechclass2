@@ -244,11 +244,8 @@ export default function Home() {
         tilt={9}
         curve={-136}
       />
-      
-      <LocationOutreach colors={sectionColors} />
-
-
       <InstructorProfile colors={sectionColors} />
+          <LocationOutreach colors={sectionColors} />
       <SectionDivider
         flip
         color={sectionColors.warm}

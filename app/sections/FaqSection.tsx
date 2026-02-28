@@ -36,6 +36,11 @@ const FAQ_ITEMS = [
     answer:
       "Yes. Please use the contact form for hosting inquiries if you have an LA location for summer tech, charter, or similar programs.",
   },
+  {
+    question: "Where do sessions take place?",
+    answer:
+      "Sessions are held in safe, public learning environments near local schools, making them easy to fit into after-school schedules. Exact locations are shared after enrollment based on the student’s program and availability.",
+  },
 ];
 
 export default function FaqSection({ colors }: FaqSectionProps) {

@@ -7,13 +7,20 @@ import {
   Card,
   CardContent,
   Container,
-  Dialog,
   Grid,
-  IconButton,
   Paper,
   Typography,
 } from "@mui/material";
-import { alpha, useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
+import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Marquee from "react-fast-marquee";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 type InstructorProfileProps = {
   colors: {
@@ -39,165 +46,155 @@ const TESTIMONIALS = [
   },
 ];
 
-const GALLERY_IMAGES = [
-  { src: "/img/2.jpg", alt: "Students in coding class", colSpan: { xs: 2, sm: 3, md: 6 }, rowSpan: 2 },
-  { src: "/img/3.jpg", alt: "Hands-on project work", colSpan: { xs: 1, sm: 3, md: 3 }, rowSpan: 1 },
-  { src: "/img/4.jpg", alt: "Project showcase", colSpan: { xs: 1, sm: 3, md: 3 }, rowSpan: 1 },
-  { src: "/img/5.jpg", alt: "Collaborative build session", colSpan: { xs: 1, sm: 3, md: 3 }, rowSpan: 1 },
-  { src: "/img/7.jpg", alt: "Classroom collaboration", colSpan: { xs: 1, sm: 3, md: 3 }, rowSpan: 1 },
-  { src: "/img/8.jpg", alt: "Student presentation", colSpan: { xs: 2, sm: 6, md: 6 }, rowSpan: 1 },
+const FULLSCREEN_GALLERY_IMAGES = [
+  { src: "/img/1.jpg", alt: "Coding lesson with students focused on laptops" },
+  { src: "/img/2.jpg", alt: "Students in coding class" },
+  { src: "/img/3.jpg", alt: "Hands-on project work" },
+  { src: "/img/4.jpg", alt: "Project showcase" },
+  { src: "/img/5.jpg", alt: "Collaborative build session" },
+  { src: "/img/6.jpg", alt: "Instructor guiding students during class" },
+  { src: "/img/7.jpg", alt: "Classroom collaboration" },
+  { src: "/img/8.jpg", alt: "Student presentation" },
+  { src: "/img/9.jpg", alt: "Students building interactive coding projects" },
+  { src: "/img/10.jpg", alt: "Class demo and feedback moment" },
+  { src: "/img/11.jpg", alt: "Pair programming activity" },
+  { src: "/img/12.jpg", alt: "Classroom workspace during coding session" },
+  { src: "/img/13.jfif", alt: "Student project collaboration" },
+  { src: "/img/14.jfif", alt: "Hands-on learning in classroom environment" },
 ];
 
 export default function InstructorProfile({ colors }: InstructorProfileProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const theme = useTheme();
 
-  const selectedImage = selectedImageIndex !== null ? GALLERY_IMAGES[selectedImageIndex] : null;
-
-  const handlePrevImage = () => {
-    setSelectedImageIndex((prev) => {
-      if (prev === null) return 0;
-      return prev === 0 ? GALLERY_IMAGES.length - 1 : prev - 1;
-    });
-  };
-
-  const handleNextImage = () => {
-    setSelectedImageIndex((prev) => {
-      if (prev === null) return 0;
-      return prev === GALLERY_IMAGES.length - 1 ? 0 : prev + 1;
-    });
-  };
+  const lightboxSlides = FULLSCREEN_GALLERY_IMAGES.map((image) => ({
+    src: image.src,
+    description: image.alt,
+  }));
 
   return (
-    <Box id="about" sx={{ py: 7, bgcolor: colors.warm }}>
+    <Box id="about" sx={{ pb: 7, pt: 4, bgcolor: colors.warm }}>
       <Container maxWidth="lg">
         <Box
           sx={{
-            mb: 4,
-            p: { xs: 1.5, sm: 2 },
-            borderRadius: 2,
-            bgcolor: "background.paper",
-            boxShadow: 1,
+            mb: 2,
+            // p: { xs: 1.5, sm: 2 },
+            // borderRadius: 2,
+            // bgcolor: "background.paper",
+            // boxShadow: 1,
           }}
         >
-          <Typography variant="h6" fontWeight={700} sx={{ mb: 0.5 }}>
-            Classroom Gallery
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Click any photo to view full-screen.
-          </Typography>
+         
 
           <Box
             sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(6, 1fr)", md: "repeat(12, 1fr)" },
-              gridAutoRows: { xs: 92, sm: 104, md: 112 },
-              gap: { xs: 1, sm: 1.25 },
+              mb: 3,
+              borderRadius: 4,
+              overflow: "hidden",
+              // bgcolor: "background.default",
+              position: "relative",
             }}
           >
-            {GALLERY_IMAGES.map((image, index) => (
-              <Box
-                key={image.src}
-                component="button"
-                type="button"
-                onClick={() => setSelectedImageIndex(index)}
-                sx={{
-                  p: 0,
-                  border: 0,
-                  bgcolor: "transparent",
-                  width: "100%",
-                  cursor: "pointer",
-                  borderRadius: 1,
-                  overflow: "hidden",
-                  position: "relative",
-                  gridColumn: {
-                    xs: `span ${image.colSpan.xs}`,
-                    sm: `span ${image.colSpan.sm}`,
-                    md: `span ${image.colSpan.md}`,
-                  },
-                  gridRow: `span ${image.rowSpan}`,
-                  outline: "none",
-                  transition: "transform 180ms ease, box-shadow 180ms ease",
-                  boxShadow: 0,
-                  "&:hover": {
-                    transform: { md: "translateY(-2px)" },
-                    boxShadow: 2,
-                  },
-                  "&:focus-visible": {
-                    boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
-                  },
-                }}
-                aria-label={`Open ${image.alt}`}
-              >
+            <Marquee speed={34} pauseOnHover gradient={false}>
+              {FULLSCREEN_GALLERY_IMAGES.map((image) => (
                 <Box
-                  component="img"
-                  src={image.src}
-                  alt={image.alt}
-                  sx={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                />
-                <Box
+                  key={`${image.src}-marquee`}
+                  component="button"
+                  type="button"
+                  onClick={() => {
+                    const selectedIndex = FULLSCREEN_GALLERY_IMAGES.findIndex((item) => item.src === image.src);
+                    setSelectedImageIndex(selectedIndex >= 0 ? selectedIndex : 0);
+                  }}
                   sx={{
-                    position: "absolute",
-                    inset: 0,
-                    background: `linear-gradient(180deg, ${alpha(theme.palette.common.black, 0)} 35%, ${alpha(theme.palette.common.black, 0.55)} 100%)`,
-                    opacity: { xs: 1, md: 0 },
-                    transition: "opacity 180ms ease",
-                    display: "flex",
-                    alignItems: "flex-end",
-                    p: 1,
-                    "button:hover &": {
-                      opacity: 1,
+                    p: 0,
+                    border: 0,
+                    bgcolor: "transparent",
+                    cursor: "pointer",
+                    mx: 1,
+                    my: 0.6,
+                    borderRadius: 2,
+                    overflow: "hidden",
+                    width: { xs: 170, sm: 210, md: 250 },
+                    height: { xs: 112, sm: 138, md: 164 },
+                    flexShrink: 0,
+                    outline: "none",
+                    transition: "transform 160ms ease, box-shadow 160ms ease",
+                    "&:hover": {
+                      transform: { md: "translateY(-2px)" },
+                      boxShadow: 2,
+                    },
+                    "&:focus-visible": {
+                      boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
                     },
                   }}
+                  aria-label={`Open ${image.alt}`}
                 >
-                  <Typography variant="caption" sx={{ color: "common.white", fontWeight: 600 }}>
-                    View
-                  </Typography>
+                  <Box
+                    component="img"
+                    src={image.src}
+                    alt={image.alt}
+                    sx={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
                 </Box>
-              </Box>
-            ))}
+              ))}
+            </Marquee>
+            {/* <Box
+              sx={{
+                pointerEvents: "none",
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: 0,
+                width: { xs: 32, sm: 44, md: 56 },
+                background: `linear-gradient(90deg, ${theme.palette.background.default} 0%, transparent 100%)`,
+                zIndex: 1,
+              }}
+            />
+            <Box
+              sx={{
+                pointerEvents: "none",
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                right: 0,
+                width: { xs: 32, sm: 44, md: 56 },
+                background: `linear-gradient(270deg, ${theme.palette.background.default} 0%, transparent 100%)`,
+                zIndex: 1,
+              }}
+            /> */}
           </Box>
+ 
         </Box>
 
         <Grid container spacing={4} alignItems="stretch">
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 13, md: 7 }}>
             <Card elevation={2} sx={{ height: "100%" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  pt: 3,
-                  pb: 2,
-                }}
-              >
-                <Avatar src="/img/6.jpg" alt="Instructor" sx={{ width: 120, height: 120, mb: 2 }} />
-              </Box>
-              <CardContent sx={{ px: 3, pb: 3 }}>
-                <Typography variant="overline" fontWeight={700} textAlign="center" display="block">
-                  Lead Instructor
-                </Typography>
-                <Typography variant="h5" fontWeight={700} gutterBottom textAlign="center">
-                  Michael Romero
+              <CardContent sx={{ px: 3, pb: 3, pt: 3 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+                  <Avatar src="/img/6.jpg" alt="Instructor" sx={{ width: 96, height: 96 }} />
+                  <Box>
+                    <Typography variant="overline" fontWeight={700} display="block">
+                      Lead Instructor
+                    </Typography>
+                    <Typography variant="h5" fontWeight={700} gutterBottom>
+                      Michael Romero
+                    </Typography>
+                  </Box>
+                </Box>
+                <Typography color="text.secondary" sx={{ mb: 2 }}>
+                  Michael Romero is a programmer and educator with over 15 years of experience in web development, game development, and teaching across Los Angeles and The Inland Empire.
                 </Typography>
                 <Typography color="text.secondary" sx={{ mb: 2 }}>
-                  [Add your short bio here - your background, teaching philosophy, and what families can expect.]
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                  With experience teaching coding across workshops, ongoing programs, and special sessions,
-                  I work with learners at many different levels - from complete beginners to advanced students.
-                </Typography>
+                <Typography color="text.secondary" sx={{ mb: 2 }}>
 
-                <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1 }}>
-                  Classroom Highlights
+                  He has organized various workshops, camps, and classroom programs focused on helping students build real projects while developing creativity and problem-solving skills.
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Real student work, collaborative builds, and hands-on sessions.
-                </Typography>
+              
               </CardContent>
             </Card>
           </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 11, md: 5 }}>
             <Grid container spacing={2}>
               {TESTIMONIALS.map((item) => (
                 <Grid key={item.source} size={{ xs: 12 }}>
@@ -215,133 +212,35 @@ export default function InstructorProfile({ colors }: InstructorProfileProps) {
           </Grid>
         </Grid>
 
-        <Dialog
+        <Lightbox
           open={selectedImageIndex !== null}
-          onClose={() => setSelectedImageIndex(null)}
-          fullScreen
-        >
-          <Box
-            sx={{
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              bgcolor: "common.black",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                p: 1,
-                borderBottom: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
-              }}
-            >
-              <Typography variant="body2" sx={{ color: "common.white", px: 1 }}>
-                {selectedImageIndex !== null ? `${selectedImageIndex + 1} / ${GALLERY_IMAGES.length}` : ""}
-              </Typography>
-              <IconButton onClick={() => setSelectedImageIndex(null)} sx={{ color: "common.white" }}>
-                <Typography sx={{ fontSize: "1.5rem", lineHeight: 1 }}>✕</Typography>
-              </IconButton>
-            </Box>
-
-            <Box
-              sx={{
-                flex: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                px: 2,
-                gap: 2,
-              }}
-            >
-              <IconButton
-                onClick={handlePrevImage}
-                sx={{
-                  color: "common.white",
-                  border: `1px solid ${alpha(theme.palette.common.white, 0.35)}`,
-                  width: 44,
-                  height: 44,
-                  flexShrink: 0,
-                }}
-                aria-label="Previous image"
-              >
-                <Typography sx={{ fontSize: "1.35rem", lineHeight: 1 }}>‹</Typography>
-              </IconButton>
-
-              {selectedImage && (
-                <Box
-                  component="img"
-                  src={selectedImage.src}
-                  alt={selectedImage.alt}
-                  sx={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
-                />
-              )}
-
-              <IconButton
-                onClick={handleNextImage}
-                sx={{
-                  color: "common.white",
-                  border: `1px solid ${alpha(theme.palette.common.white, 0.35)}`,
-                  width: 44,
-                  height: 44,
-                  flexShrink: 0,
-                }}
-                aria-label="Next image"
-              >
-                <Typography sx={{ fontSize: "1.35rem", lineHeight: 1 }}>›</Typography>
-              </IconButton>
-            </Box>
-
-            {selectedImage && (
-              <Typography
-                variant="body2"
-                sx={{ color: "common.white", textAlign: "center", px: 2, pb: 1.5, opacity: 0.9 }}
-              >
-                {selectedImage.alt}
-              </Typography>
-            )}
-
-            <Box
-              sx={{
-                p: 1.5,
-                display: "flex",
-                gap: 1,
-                overflowX: "auto",
-                borderTop: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
-              }}
-            >
-              {GALLERY_IMAGES.map((image, index) => (
-                <Box
-                  key={`${image.src}-thumb`}
-                  component="button"
-                  type="button"
-                  onClick={() => setSelectedImageIndex(index)}
-                  sx={{
-                    p: 0,
-                    border: selectedImageIndex === index ? 2 : 0,
-                    borderColor: "common.white",
-                    bgcolor: "transparent",
-                    borderRadius: 1,
-                    overflow: "hidden",
-                    cursor: "pointer",
-                    minWidth: { xs: 92, sm: 120 },
-                    opacity: selectedImageIndex === index ? 1 : 0.72,
-                    transition: "opacity 150ms ease",
-                  }}
-                  aria-label={`View ${image.alt}`}
-                >
-                  <Box
-                    component="img"
-                    src={image.src}
-                    alt={image.alt}
-                    sx={{ width: "100%", height: 72, objectFit: "cover", display: "block" }}
-                  />
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        </Dialog>
+          close={() => setSelectedImageIndex(null)}
+          index={selectedImageIndex ?? 0}
+          slides={lightboxSlides}
+          plugins={[Captions, Fullscreen, Thumbnails, Zoom]}
+          captions={{
+            descriptionTextAlign: "center",
+          }}
+          thumbnails={{
+            position: "bottom",
+            width: 108,
+            height: 72,
+            border: 0,
+            borderRadius: 8,
+            gap: 10,
+          }}
+          zoom={{
+            maxZoomPixelRatio: 3,
+            zoomInMultiplier: 2,
+            scrollToZoom: true,
+          }}
+          controller={{
+            closeOnBackdropClick: true,
+          }}
+          on={{
+            view: ({ index }) => setSelectedImageIndex(index),
+          }}
+        />
       </Container>
     </Box>
   );

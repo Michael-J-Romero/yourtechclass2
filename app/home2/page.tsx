@@ -133,8 +133,7 @@ export default function HomePage() {
               textShadow: "1px 1px 3px rgba(0,0,0,0.3)",
             }}
           >
-            Students learn programming by building games and real interactive
-            projects in small, supportive environments.
+            Students learn programming by building games and interactive projects in small, supportive sessions led by an experienced instructor.
           </Typography>
           <Button
             variant="contained"
