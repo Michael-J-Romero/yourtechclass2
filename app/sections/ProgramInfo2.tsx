@@ -1,7 +1,19 @@
 import React, { useState } from "react";
-import { Box, Container, Grid, Typography, Button, Collapse, Chip } from "@mui/material";
+import {
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
+	Box,
+	Button,
+	Chip,
+	Container,
+	Grid,
+	Typography,
+	useMediaQuery,
+} from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ProgramCard from "./ProgramCard";
+import { useTheme } from "@mui/material/styles";
 
 type ProgramInfoProps = {
 	colors: {
@@ -69,6 +81,14 @@ const FORMAT_ITEMS = [
 export default function ProgramInfo({ colors }: ProgramInfoProps) {
 	const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 	const [showAll, setShowAll] = useState(false);
+	const [expandedPanels, setExpandedPanels] = useState<Record<number, boolean>>(() =>
+		FORMAT_ITEMS.reduce((acc, _item, index) => {
+			acc[index] = true;
+			return acc;
+		}, {} as Record<number, boolean>)
+	);
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
 	const TOPICS = [
 		"Game Development",
@@ -107,35 +127,97 @@ export default function ProgramInfo({ colors }: ProgramInfoProps) {
 						needs and ambitious learners aiming for advanced coding outcomes.
 					</Typography>
 
+					{isMobile ? (
+						<Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+							{FORMAT_ITEMS.map((item, index) => {
+								const isExpanded = !!expandedPanels[index];
 
-					<Grid container spacing={2}>
-						{FORMAT_ITEMS.map((item, index) => {
-							const isExpanded = showAll || hoveredCard === index;
+								return (
+									<Accordion
+										key={item.title}
+										expanded={isExpanded}
+										onChange={() =>
+											setExpandedPanels((prev) => ({ ...prev, [index]: !prev[index] }))
+										}
+										sx={{ borderRadius: 2, boxShadow: 2 }}
+									>
+										<AccordionSummary expandIcon={<KeyboardArrowDownIcon />}>
+											<Box sx={{ display: "flex", alignItems: "center", gap: 1, color: "primary.main" }}>
+												<Box component="svg" viewBox="0 0 24 24" sx={{ width: 20, height: 20, flexShrink: 0 }}>
+													<path fill="currentColor" d={item.iconPath} />
+												</Box>
+												<Typography variant="h6" fontWeight={700} color="text.primary">
+													{item.title}
+												</Typography>
+											</Box>
+										</AccordionSummary>
+										<AccordionDetails>
+											{renderDescription(item.description)}
+											<Box sx={{ mt: 1 }}>
+												<Typography component="span" variant="subtitle2" fontWeight={700} sx={{ mr: 0.5 }}>
+													Available In:
+												</Typography>
+												{item.where.map((location, idx) => (
+													<Typography key={location} component="span" variant="body2" color="text.secondary" sx={{ display: "inline" }}>
+														{location}{idx < item.where.length - 1 ? ", " : ""}
+													</Typography>
+												))}
+											</Box>
+											<Box sx={{ mt: 1.5, display: "flex", justifyContent: "center" }}>
+												<Typography sx={{ fontSize: "1.35rem", fontWeight: 300, textAlign: "center", color: "secondary.main" }}>
+													{item.price}
+												</Typography>
+											</Box>
+										</AccordionDetails>
+									</Accordion>
+								);
+							})}
+						</Box>
+					) : (
+						<Grid container spacing={2}>
+							{FORMAT_ITEMS.map((item, index) => {
+								const isExpanded = showAll || hoveredCard === index;
 
-							return (
-								<Grid
-									key={item.title}
-									size={{ xs: 12, md: 4 }}
-									sx={{ position: "relative", overflow: "visible", zIndex: isExpanded ? 20 : 1 }}
-									onMouseEnter={() => !showAll && setHoveredCard(index)}
-									onMouseLeave={() => !showAll && setHoveredCard(null)}
-								>
-									<ProgramCard
-										item={item}
-										index={index}
-										isExpanded={isExpanded}
-										mode={showAll ? "inline" : "overlay"}
-										onHoverEnter={() => !showAll && setHoveredCard(index)}
-										onHoverLeave={() => !showAll && setHoveredCard(null)}
-										onRequestGlobalExpand={() => setShowAll(true)}
-										onRequestCollapseAll={() => setShowAll(false)}
-									/>
-								</Grid>
-							);
-						})}
-					</Grid>
+								return (
+									<Grid
+										key={item.title}
+										size={{ xs: 12, md: 4 }}
+										sx={{ position: "relative", overflow: "visible", zIndex: isExpanded ? 20 : 1 }}
+										onMouseEnter={() => !showAll && setHoveredCard(index)}
+										onMouseLeave={() => !showAll && setHoveredCard(null)}
+									>
+										<ProgramCard
+											item={item}
+											index={index}
+											isExpanded={isExpanded}
+											mode={showAll ? "inline" : "overlay"}
+											onHoverEnter={() => !showAll && setHoveredCard(index)}
+											onHoverLeave={() => !showAll && setHoveredCard(null)}
+											onRequestGlobalExpand={() => setShowAll(true)}
+											onRequestCollapseAll={() => setShowAll(false)}
+										/>
+									</Grid>
+								);
+							})}
+						</Grid>
+					)}
 
-					{showAll && (
+					{isMobile && (
+						<>
+							<Box sx={{ textAlign: 'center', mt: 3, mb: 1 }}>
+								<Typography variant="subtitle1" component="div" sx={{ color: 'text.primary' }}>
+									Below are some of the <Box component="span" sx={{ fontWeight: 300 }}>subjects</Box> and <Box component="span" sx={{  fontWeight: 300 }}>technologies</Box> you can learn:
+								</Typography>
+							</Box>
+							<Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1, mb: 2, justifyContent: 'center' }}>
+								{INTEREST_OPTIONS.map(opt => (
+									<Chip key={opt.label} label={opt.label} color={opt.color} size="small" variant="outlined" />
+								))}
+							</Box>
+						</>
+					)}
+
+					{!isMobile && showAll && (
 						<>
 							<Box sx={{ textAlign: 'center', mt: 2, mb: 1 }}>
 								<Typography variant="subtitle1" component="div" sx={{ color: 'text.primary' }}>
@@ -150,11 +232,13 @@ export default function ProgramInfo({ colors }: ProgramInfoProps) {
 						</>
 					)}
 
-					<Box sx={{ textAlign: 'center', mt: 4 }}>
-						<Button variant="contained" size="large" onClick={() => setShowAll(!showAll)}>
-							{showAll ? "Show Less" : "More Info"}
-						</Button>
-					</Box>
+					{!isMobile && (
+						<Box sx={{ textAlign: 'center', mt: 4 }}>
+							<Button variant="contained" size="large" onClick={() => setShowAll(!showAll)}>
+								{showAll ? "Show Less" : "More Info"}
+							</Button>
+						</Box>
+					)}
 				</Container>
 			</Box>
 		</>

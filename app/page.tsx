@@ -32,8 +32,8 @@ import InstructorProfile from "./sections/InstructorProfile";
 const NAV_LINKS = [
   { label: "Programs", href: "#programs" },
   { label: "About", href: "#about" },
+  { label: "Inquire", href: "#contact" },
   { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
 ];
 
 type SectionDividerProps = {
@@ -108,7 +108,7 @@ export default function Home() {
             YourTechClass
           </Typography>
           {/* Dark mode toggle */}
-          <IconButton
+          {/* <IconButton
             color="inherit"
             onClick={() => colorMode.toggleColorMode()}
             sx={{ ml: 1, display: { xs: "none", md: "inline-flex" } }}
@@ -117,7 +117,7 @@ export default function Home() {
             <Typography sx={{ fontSize: "0.85rem", fontWeight: 700 }}>
               {theme.palette.mode === "light" ? "Dark" : "Light"}
             </Typography>
-          </IconButton>
+          </IconButton> */}
           <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 1 }}>
             {NAV_LINKS.map((link) => (
               <Button key={link.label} color="inherit" href={link.href} component={Link}>
@@ -169,10 +169,10 @@ export default function Home() {
           position: "relative",
           overflow: "hidden",
           color: "white",
-          py: { xs: 12, md: 18 },
+          py: { xs: 0, md: 18 },
           textAlign: "center",
-          minHeight: { xs: 520, md: 680 },
-          display: "flex",
+          minHeight: { xs: "auto", md: 680 },
+          display: { xs: "none", md: "flex" },
           alignItems: "center",
         }}
       >
@@ -194,32 +194,58 @@ export default function Home() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.55) 100%)",
-            zIndex: 0,
+              "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0.62) 85%)",
+            zIndex: 1,
           }}
         />
-        <Container maxWidth="md" sx={{ position: "relative", zIndex: 1 }}>
-          <Typography variant="h2" component="h1" fontWeight={800} gutterBottom>
-            Creative Coding Programs for Kids & Teens
-          </Typography>
-          <Typography variant="h6" sx={{ opacity: 0.95, mb: 4, lineHeight: 1.6 }}>
-            Students learn by building games and interactive projects in small,
-            supportive environments across Los Angeles.
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            href="#contact"
-            component={Link}
+        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+          <Box
             sx={{
-              bgcolor: theme.palette.mode === "dark" ? "secondary.main" : "white",
-              color: theme.palette.mode === "dark" ? "grey.900" : "primary.main",
-              fontWeight: 700,
-              px: 4,
+              display: "inline-block",
+              px: { xs: 2, md: 4 },
+              py: { xs: 2.5, md: 3.5 },
             }}
           >
-            Request Program Info
-          </Button>
+            <Typography
+              variant="h2"
+              component="h1"
+              fontWeight={800}
+              gutterBottom
+            >
+              Creative Coding Programs for Teens and Adults
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                opacity: 0.98,
+                mb: 0,
+                lineHeight: 1.6,
+                textShadow: "1px 1px 10px rgb(0 0 0 / 92%)",
+                background: "#0000003b",
+                borderRadius: "24px",
+                padding: "15px",
+                fontWeight: 700,
+                display: "inline-block",
+              }}
+            >
+              Students learn by building games and interactive projects in small,
+              supportive environments across Los Angeles.
+            </Typography>
+            <Button
+              variant="contained"
+              size="large"
+              href="#contact"
+              component={Link}
+              sx={{
+                bgcolor: theme.palette.mode === "dark" ? "secondary.main" : "white",
+                color: theme.palette.mode === "dark" ? "grey.900" : "primary.main",
+                fontWeight: 700,
+                px: 4,
+              }}
+            >
+              Request Program Info
+            </Button>
+          </Box>
         </Container>
         <Box
           sx={{
@@ -233,6 +259,85 @@ export default function Home() {
         >
           {/* <SectionDivider r={0} color={SECTION_COLORS.cool} /> */}
         </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: { xs: "block", md: "none" },
+          color: "white",
+          textAlign: "center",
+        }}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            overflow: "hidden",
+            minHeight: 320,
+          }}
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: "url(/img/1.jpg)",
+              backgroundSize: "cover",
+              backgroundPosition: "center 35%",
+              zIndex: 0,
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.25) 65%, rgba(0,0,0,0.35) 100%)",
+              zIndex: 0,
+            }}
+          />
+          <Container maxWidth="sm" sx={{ position: "relative", zIndex: 1, pt: 9, pb: 6 }}>
+            <Typography
+              variant="h3"
+              component="h1"
+              fontWeight={800}
+              gutterBottom
+            >
+              Creative Coding Programs for Kids & Teens
+            </Typography>
+          </Container>
+        </Box>
+        <Container maxWidth="sm" sx={{ py: 4 }}>
+          <Typography
+            variant="body1"
+            sx={{
+              color: theme.palette.mode === "dark" ? "grey.100" : "grey.900",
+              mb: 0,
+              lineHeight: 1.7,
+              textShadow: "1px 1px 10px rgb(0 0 0 / 92%)",
+              background: "#0000003b",
+              borderRadius: "24px",
+              padding: "15px",
+              fontWeight: 700,
+              display: "inline-block",
+            }}
+          >
+            Students learn by building games and interactive projects in small,
+            supportive environments across Los Angeles.
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            href="#contact"
+            component={Link}
+            sx={{
+              bgcolor: theme.palette.mode === "dark" ? "secondary.main" : "primary.main",
+              color: theme.palette.mode === "dark" ? "grey.900" : "white",
+              fontWeight: 700,
+              px: 4,
+            }}
+          >
+            Request Program Info
+          </Button>
+        </Container>
       </Box>
 
     
@@ -309,7 +414,7 @@ export default function Home() {
         }}
       >
         <Button variant="contained" size="large" href="#contact" component={Link} sx={{ px: 3, fontWeight: 700 }}>
-          Book a Free Call
+          Schedule your first lesson!
         </Button>
       </Box>
 
@@ -326,7 +431,7 @@ export default function Home() {
         }}
       >
         <Button variant="contained" fullWidth href="#contact" component={Link} sx={{ fontWeight: 700 }}>
-          Book a Free Call
+          Ask us about our programs
         </Button>
       </Box>
 

@@ -49,20 +49,20 @@ const TESTIMONIALS = [
 const FULLSCREEN_GALLERY_IMAGES = [
   // { src: "/img/1.jpg", alt: "Coding lesson with students focused on laptops" },
   // { src: "/img/2.jpg", alt: "Students in coding class" },
-  { src: "/img/3.jpg", alt: "Hands-on project work" },
-  { src: "/img/4.jpg", alt: "Project showcase" },
-  { src: "/img/5.jpg", alt: "Collaborative build session" },
+  { src: "/img/3.jpg", alt: "Free Code Camp session" },
+  { src: "/img/4.jpg", alt: "Coding workshop" },
+  { src: "/img/5.jpg", alt: "Yourtechclass adult group" },
+  { src: "/img/13.png", alt: "Summer Tech Camp" },
+  { src: "/img/14.png", alt: "Building games with visual programming" },
+  { src: "/img/15.png", alt: "Student project collaboration" },
+  { src: "/img/12.jpg", alt: "Creating a 'Breakout' game" },
+  { src: "/img/10.jpg", alt: "Whiteboard challenges in a small group" },
+  { src: "/img/11.jpg", alt: "Walking through a coding exercise" },
   { src: "/img/6.jpg", alt: "Instructor guiding students during class" },
-  { src: "/img/7.jpg", alt: "Classroom collaboration" },
-  { src: "/img/8.jpg", alt: "Student presentation" },
-  { src: "/img/9.jpg", alt: "Students building interactive coding projects" },
-  { src: "/img/10.jpg", alt: "Class demo and feedback moment" },
-  { src: "/img/11.jpg", alt: "Pair programming activity" },
-  { src: "/img/12.jpg", alt: "Classroom workspace during coding session" },
-  { src: "/img/13.png", alt: "Student project collaboration" },
-  { src: "/img/14.png", alt: "Hands-on learning in classroom environment" },
-  { src: "/img/15.png", alt: "Hands-on learning in classroom environment" },
-];
+  { src: "/img/7.jpg", alt: "Classroom following a coding lesson" },
+  { src: "/img/8.jpg", alt: "Building a game with visual programming" },
+  { src: "/img/9.jpg", alt: "Students learning about procedural drawing" },
+];  
 
 export default function InstructorProfile({ colors }: InstructorProfileProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
