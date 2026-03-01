@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import archiver from "archiver";
-import { PassThrough } from "stream";
+import { PassThrough, Readable } from "stream";
 
 export async function GET() {
   const imgDir = path.join(process.cwd(), "public", "img");
@@ -28,7 +28,9 @@ export async function GET() {
 
   archive.finalize();
 
-  return new Response(stream, {
+  const body = Readable.toWeb(stream) as ReadableStream;
+
+  return new Response(body, {
     headers: {
       "Content-Type": "application/zip",
       "Content-Disposition": "attachment; filename=images.zip",
