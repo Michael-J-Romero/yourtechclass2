@@ -47,8 +47,8 @@ const TESTIMONIALS = [
 ];
 
 const FULLSCREEN_GALLERY_IMAGES = [
-  { src: "/img/1.jpg", alt: "Coding lesson with students focused on laptops" },
-  { src: "/img/2.jpg", alt: "Students in coding class" },
+  // { src: "/img/1.jpg", alt: "Coding lesson with students focused on laptops" },
+  // { src: "/img/2.jpg", alt: "Students in coding class" },
   { src: "/img/3.jpg", alt: "Hands-on project work" },
   { src: "/img/4.jpg", alt: "Project showcase" },
   { src: "/img/5.jpg", alt: "Collaborative build session" },
@@ -59,8 +59,9 @@ const FULLSCREEN_GALLERY_IMAGES = [
   { src: "/img/10.jpg", alt: "Class demo and feedback moment" },
   { src: "/img/11.jpg", alt: "Pair programming activity" },
   { src: "/img/12.jpg", alt: "Classroom workspace during coding session" },
-  { src: "/img/13.jfif", alt: "Student project collaboration" },
-  { src: "/img/14.jfif", alt: "Hands-on learning in classroom environment" },
+  { src: "/img/13.png", alt: "Student project collaboration" },
+  { src: "/img/14.png", alt: "Hands-on learning in classroom environment" },
+  { src: "/img/15.png", alt: "Hands-on learning in classroom environment" },
 ];
 
 export default function InstructorProfile({ colors }: InstructorProfileProps) {
@@ -73,11 +74,15 @@ export default function InstructorProfile({ colors }: InstructorProfileProps) {
   }));
 
   return (
-    <Box id="about" sx={{ pb: 7, pt: 4, bgcolor: colors.warm }}>
+    <Box id="about" sx={{ pb: 7, pt: 2, bgcolor: colors.warm }}>
       <Container maxWidth="lg">
+        <Typography variant="h3" component="h2" textAlign="center" fontWeight={700} sx={{ mb: 4 }}>
+        Learning in Action
+        
+        </Typography>
         <Box
           sx={{
-            mb: 2,
+            mb: 8,
             // p: { xs: 1.5, sm: 2 },
             // borderRadius: 2,
             // bgcolor: "background.paper",

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Alert,
+  Autocomplete,
   Box,
   Button,
   Chip,
@@ -79,12 +80,6 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
     setForm({ name: "", email: "", studentAge: "", message: "" });
   }
 
-  function toggleInterest(label: string) {
-    setSelectedInterests((prev) =>
-      prev.includes(label) ? prev.filter((item) => item !== label) : [...prev, label]
-    );
-  }
-
   return (
     <Box id="contact" sx={{ py: 8, bgcolor: colors.cool }}>
       <Container maxWidth="sm">
@@ -105,19 +100,32 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
                 <Typography variant="subtitle2" color="text.primary" fontWeight={700} sx={{ mb: 1.25 }}>
                   What subjects and technologies are you interested in?
                 </Typography>
-                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-                  {INTEREST_OPTIONS.map((item) => (
-                    <Chip
-                      key={item.label}
-                      label={item.label}
-                      color={item.color}
-                      variant={selectedInterests.includes(item.label) ? "filled" : "outlined"}
-                      size="small"
-                      clickable
-                      onClick={() => toggleInterest(item.label)}
+                <Autocomplete
+                  multiple
+                  disableCloseOnSelect
+                  options={INTEREST_OPTIONS}
+                  value={INTEREST_OPTIONS.filter((option) => selectedInterests.includes(option.label))}
+                  getOptionLabel={(option) => option.label}
+                  onChange={(_, value) => setSelectedInterests(value.map((option) => option.label))}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        {...getTagProps({ index })}
+                        key={option.label}
+                        label={option.label}
+                        color={option.color}
+                        size="small"
+                      />
+                    ))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Select all that apply"
+                      placeholder={selectedInterests.length === 0 ? "Choose subjects or technologies" : ""}
                     />
-                  ))}
-                </Box>
+                  )}
+                />
               </Grid>
               <Grid size={{ xs: 12 }}>
                 <TextField

@@ -12,10 +12,10 @@ type LocationOutreachProps = {
 
 export default function LocationOutreach({ colors }: LocationOutreachProps) {
 	return (
-		<Box id="location-outreach" sx={{ py: 7, bgcolor: colors.warm }}>
+		<Box id="location-outreach" sx={{ py: 2, bgcolor: colors.warm }}>
 			<Container maxWidth="lg">
 				<Grid 
-                direction='r'
+                
                 container spacing={4} alignItems="center">
 					<Grid size={{ xs: 12, md: 7 }}>
 						<Box

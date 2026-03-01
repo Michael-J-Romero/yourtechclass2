@@ -90,8 +90,8 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const prefersReducedMotion = useReducedMotion();
-  const heroParallaxY = useTransform(scrollY, [0, 700], [0, 140]);
-  const heroScale = useTransform(scrollY, [0, 700], [1, 1.08]);
+  const heroParallaxY = useTransform(scrollY, [0, 900], [0, 360]);
+  const heroScale = useTransform(scrollY, [0, 700], [1, 1.03]);
   const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
   const sectionColors =
