@@ -6,7 +6,7 @@ import { ThemeProvider as MuiThemeProvider, createTheme, CssBaseline } from "@mu
 export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<"light" | "dark">("light");
+  const [mode, setMode] = useState<"light" | "dark">("dark");
 
   const colorMode = useMemo(
     () => ({
