@@ -182,13 +182,13 @@ export default function InstructorProfile({ colors }: InstructorProfileProps) {
                   </Box>
                 </Box>
                 <Typography color="text.secondary" sx={{ mb: 2 }}>
-                  Michael Romero is a programmer and educator with over 15 years of experience in web development, game development, and teaching across Los Angeles and The Inland Empire.
-                </Typography>
-                <Typography color="text.secondary" sx={{ mb: 2 }}>
-                </Typography>
-                <Typography color="text.secondary" sx={{ mb: 2 }}>
 
-                  He has organized various workshops, camps, and classroom programs focused on helping students build real projects while developing creativity and problem-solving skills.
+Michael Romero is a programmer and educator with over 15 years of experience in web development, game development, and technology instruction across Los Angeles and the Inland Empire.
+
+
+                </Typography>
+                <Typography color="text.secondary" sx={{ mb: 2 }}>
+He specializes in helping students understand complex technical concepts through hands-on learning, emphasizing creation and exploration. By building their own games and interactive projects, students develop creativity, problem-solving skills, and confidence while gaining a deeper understanding of how technology works.
                 </Typography>
               
               </CardContent>

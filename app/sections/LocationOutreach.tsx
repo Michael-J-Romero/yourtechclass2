@@ -14,8 +14,10 @@ export default function LocationOutreach({ colors }: LocationOutreachProps) {
 	return (
 		<Box id="location-outreach" sx={{ py: 7, bgcolor: colors.warm }}>
 			<Container maxWidth="lg">
-				<Grid container spacing={4} alignItems="center">
-					<Grid size={{ xs: 12, md: 6 }}>
+				<Grid 
+                direction='r'
+                container spacing={4} alignItems="center">
+					<Grid size={{ xs: 12, md: 7 }}>
 						<Box
 							component="video"
 							src="/vid.mp4"
@@ -30,8 +32,10 @@ export default function LocationOutreach({ colors }: LocationOutreachProps) {
 						</Box>
 					</Grid>
 
-					<Grid size={{ xs: 12, md: 6 }}>
-						<Typography variant="h6" fontWeight={700} sx={{ mb: 1 }}>
+					<Grid size={{ xs: 12, md: 5 }}>
+						<Typography variant="h6" 
+                        fontSize={{ xs: "1.25rem", sm: "2rem" }}
+                        fontWeight={700} sx={{ mb: 1 }}>
 							Schools & Community Programs
 						</Typography>
 
