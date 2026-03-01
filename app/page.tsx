@@ -198,7 +198,7 @@ export default function Home() {
             zIndex: 1,
           }}
         />
-        <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
+        <Container maxWidth="md" sx={{ position: "relative", zIndex: 1 }}>
           <Box
             sx={{
               display: "inline-block",
@@ -212,7 +212,7 @@ export default function Home() {
               fontWeight={800}
               gutterBottom
             >
-              Creative Coding Programs for Teens and Adults
+              Creative Coding Programs for All Ages
             </Typography>
             <Typography
               variant="h6"

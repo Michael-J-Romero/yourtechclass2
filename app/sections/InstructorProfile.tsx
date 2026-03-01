@@ -30,19 +30,16 @@ type InstructorProfileProps = {
 
 const TESTIMONIALS = [
   {
-    quote:
-      "My child went from being nervous about coding to confidently building and presenting projects. The structure and support were excellent.",
-    source: "Parent, Los Angeles",
+    quote:"My kid loves it! Says they want to be a game developer when they grow up now!",
+    source: "Placeholder Parent, Los Angeles",
   },
   {
-    quote:
-      "Lessons are flexible, practical, and genuinely engaging. We saw growth in both technical skills and confidence.",
-    source: "Family Program Participant",
+    quote:"Went to a couple whiteboard challenge sessions, it was fun and reassured me of my abilities, I feel much more confident about my upcoming coding interviews!",
+    source: "Placeholder Program Participant",
   },
   {
-    quote:
-      "Patient, encouraging, and highly organized. My student felt supported while still being challenged to grow.",
-    source: "Parent, Pasadena",
+    quote:"As a front-end developer struggling with back-end concepts, this program was a game-changer. I can now build full-stack applications on serverless architectures!",
+    source: "Placeholder Parent, Pasadena",
   },
 ];
 
@@ -52,9 +49,9 @@ const FULLSCREEN_GALLERY_IMAGES = [
   { src: "/img/3.jpg", alt: "Free Code Camp session" },
   { src: "/img/4.jpg", alt: "Coding workshop" },
   { src: "/img/5.jpg", alt: "Yourtechclass adult group" },
-  { src: "/img/13.png", alt: "Summer Tech Camp" },
-  { src: "/img/14.png", alt: "Building games with visual programming" },
-  { src: "/img/15.png", alt: "Student project collaboration" },
+  { src: "/img/13.png", alt: "Summer Tech Camp -with Empowering Success Now" },
+  { src: "/img/14.png", alt: "Building games with visual programming (Summer Tech Camp -with Empowering Success Now)" },
+  { src: "/img/15.png", alt: "Student project collaboration (Summer Tech Camp -with Empowering Success Now)" },
   { src: "/img/12.jpg", alt: "Creating a 'Breakout' game" },
   { src: "/img/10.jpg", alt: "Whiteboard challenges in a small group" },
   { src: "/img/11.jpg", alt: "Walking through a coding exercise" },
@@ -76,10 +73,18 @@ export default function InstructorProfile({ colors }: InstructorProfileProps) {
   return (
     <Box id="about" sx={{ pb: 7, pt: 2, bgcolor: colors.warm }}>
       <Container maxWidth="lg">
-        <Typography variant="h3" component="h2" textAlign="center" fontWeight={700} sx={{ mb: 4 }}>
-        Learning in Action
-        
+        <Typography variant="h3" component="h3" textAlign="center" fontWeight={700} sx={{ mb: 1 }} >
+          {/* should be a veryshort title */}
+          Hands-on programming 
+          {/* Hands-on programming for all ages */}
+          {/* tech education f */}
+          
+       
         </Typography>
+        <Typography variant="h5" component="h3" textAlign="center" fontWeight={300} sx={{ mb: 4 }}>
+          learning by developing real projects
+        </Typography>
+
         <Box
           sx={{
             mb: 8,
@@ -172,7 +177,7 @@ export default function InstructorProfile({ colors }: InstructorProfileProps) {
         </Box>
 
         <Grid container spacing={4} alignItems="stretch">
-          <Grid size={{ xs: 13, md: 7 }}>
+          <Grid size={{ xs: 13, md: 6 }}>
             <Card elevation={2} sx={{ height: "100%" }}>
               <CardContent sx={{ px: 3, pb: 3, pt: 3 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
@@ -199,7 +204,7 @@ He specializes in helping students understand complex technical concepts through
               </CardContent>
             </Card>
           </Grid>
-          <Grid size={{ xs: 11, md: 5 }}>
+          <Grid size={{ xs: 11, md: 6 }}>
             <Grid container spacing={2}>
               {TESTIMONIALS.map((item) => (
                 <Grid key={item.source} size={{ xs: 12 }}>
