@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Autocomplete,
@@ -7,12 +7,14 @@ import {
   Chip,
   Container,
   Grid,
+  MenuItem,
   Paper,
   Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
+import PhoneIcon from "@mui/icons-material/Phone";
 
 type ContactFormSectionProps = {
   colors: {
@@ -46,8 +48,21 @@ const INTEREST_OPTIONS = [
   ...TECHNOLOGIES.map((label) => ({ label, color: "secondary" as const })),
 ];
 
+const INQUIRY_TYPE_OPTIONS = [
+  "One-on-One Coaching",
+  "Programming Groups",
+  "Afterschool Groups",
+  "Hosting a Class or Program",
+];
+
 export default function ContactFormSection({ colors }: ContactFormSectionProps) {
-  const [form, setForm] = useState({ name: "", email: "", studentAge: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    studentAge: "",
+    message: "",
+    inquiryType: "",
+  });
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -59,7 +74,7 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
 
   function validate() {
     const newErrors: Record<string, string> = {};
-    if (!form.name.trim()) newErrors.name = "Parent name is required.";
+    if (!form.name.trim()) newErrors.name = "Name is required.";
     if (!form.email.trim()) {
       newErrors.email = "Email is required.";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
@@ -77,8 +92,22 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
       return;
     }
     setSubmitted(true);
-    setForm({ name: "", email: "", studentAge: "", message: "" });
+    setForm({ name: "", email: "", studentAge: "", message: "", inquiryType: "" });
   }
+
+  useEffect(() => {
+    const handleProgramSelection = (event: Event) => {
+      const customEvent = event as CustomEvent<string>;
+      if (customEvent.detail) {
+        setForm((prev) => ({ ...prev, inquiryType: customEvent.detail }));
+      }
+    };
+
+    window.addEventListener("programInquirySelect", handleProgramSelection as EventListener);
+    return () => {
+      window.removeEventListener("programInquirySelect", handleProgramSelection as EventListener);
+    };
+  }, []);
 
   return (
     <Box id="contact" sx={{ py: 8, bgcolor: colors.cool }}>
@@ -129,8 +158,28 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
               </Grid>
               <Grid size={{ xs: 12 }}>
                 <TextField
+                  select
                   fullWidth
-                  label="Parent Name"
+                  label="Program format"
+                  name="inquiryType"
+                  value={form.inquiryType}
+                  onChange={handleChange}
+                  helperText="Select a format if you already have one in mind."
+                >
+                  <MenuItem value="">
+                    No preference
+                  </MenuItem>
+                  {INQUIRY_TYPE_OPTIONS.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <TextField
+                  fullWidth
+                  label="Name"
                   name="name"
                   value={form.name}
                   onChange={handleChange}
@@ -167,7 +216,7 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
               <Grid size={{ xs: 12 }}>
                 <TextField
                   fullWidth
-                  label="Message (optional)"
+                  label="Message"
                   name="message"
                   multiline
                   rows={4}
@@ -190,6 +239,12 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
             </Grid>
           </Box>
         </Paper>
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 1, mt: 3 }}>
+          <PhoneIcon fontSize="small" color="primary" />
+          <Typography variant="h6" textAlign="center" fontWeight={700}>
+            You can also call us at (909) 206-4546‬
+          </Typography>
+        </Box>
       </Container>
       <Snackbar
         open={submitted}

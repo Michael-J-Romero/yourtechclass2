@@ -194,7 +194,7 @@ export default function Home() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0.62) 85%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0.52) 85%)",
             zIndex: 1,
           }}
         />
@@ -375,13 +375,13 @@ export default function Home() {
           <Box sx={{ display: "flex", justifyContent: "center", gap: 3, mt: 2, flexWrap: "wrap" }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <MailIcon fontSize="small" />
-              <Link href="mailto:info@yourtechclass.org" color="inherit" underline="hover">
-                info@yourtechclass.org
+              <Link href="mailto:info@yourtechclass.com" color="inherit" underline="hover">
+                info@yourtechclass.com
               </Link>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <PhoneIcon fontSize="small" />
-              <Typography variant="body2">(213) 555-0100</Typography>
+              <Typography variant="body2">(909) 206-4546‬</Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <Typography variant="body2">📍 Los Angeles, CA</Typography>

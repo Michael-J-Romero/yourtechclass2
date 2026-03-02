@@ -78,6 +78,19 @@ const FORMAT_ITEMS = [
 	},
 ];
 
+const INQUIRY_TYPE_LABELS = {
+	oneOnOne: "One-on-One Coaching",
+	programmingGroups: "Programming Groups",
+	afterschoolGroups: "Afterschool Groups",
+	hosting: "Hosting a Class or Program",
+};
+
+const CARD_INQUIRY_MAP: Record<string, string> = {
+	"One-on-One Coaching": INQUIRY_TYPE_LABELS.oneOnOne,
+	"Afterschool Groups": INQUIRY_TYPE_LABELS.afterschoolGroups,
+	"Workshops & Programs": INQUIRY_TYPE_LABELS.hosting,
+};
+
 export default function ProgramInfo({ colors }: ProgramInfoProps) {
 	const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 	const [showAll, setShowAll] = useState(false);
@@ -115,6 +128,15 @@ export default function ProgramInfo({ colors }: ProgramInfoProps) {
 		...TOPICS.map((label) => ({ label, color: "primary" as const })),
 		...TECHNOLOGIES.map((label) => ({ label, color: "secondary" as const })),
 	];
+
+	function handleProgramInquirySelection(label?: string) {
+		if (!label) return;
+		window.dispatchEvent(new CustomEvent("programInquirySelect", { detail: label }));
+		const contactSection = document.getElementById("contact");
+		if (contactSection) {
+			contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	}
 
 	return (
 		<>
@@ -191,6 +213,7 @@ export default function ProgramInfo({ colors }: ProgramInfoProps) {
 											index={index}
 											isExpanded={isExpanded}
 											mode={showAll ? "inline" : "overlay"}
+												onCardClick={() => handleProgramInquirySelection(CARD_INQUIRY_MAP[item.title])}
 											onHoverEnter={() => !showAll && setHoveredCard(index)}
 											onHoverLeave={() => !showAll && setHoveredCard(null)}
 											onRequestGlobalExpand={() => setShowAll(true)}

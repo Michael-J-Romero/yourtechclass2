@@ -30,15 +30,15 @@ type InstructorProfileProps = {
 
 const TESTIMONIALS = [
   {
-    quote:"My kid loves it! Says they want to be a game developer when they grow up now!",
+    quote:"My kid loves it! Says they want to be a game developer when they grow up!",
     source: "Placeholder Parent, Los Angeles",
   },
   {
-    quote:"Went to a couple whiteboard challenge sessions, it was fun and reassured me of my abilities, I feel much more confident about my upcoming coding interviews!",
+    quote:"Went to a couple whiteboard challenge sessions, I feel much more confident about my upcoming coding interviews!",
     source: "Placeholder Program Participant",
   },
   {
-    quote:"As a front-end developer struggling with back-end concepts, this program was a game-changer. I can now build full-stack applications on serverless architectures!",
+    quote:"Was a front-end developer struggling with back-end concepts, after a few months of one on ones, I can now build full-stack applications on serverless architectures!",
     source: "Placeholder Parent, Pasadena",
   },
 ];

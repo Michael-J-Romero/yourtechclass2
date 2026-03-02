@@ -30,6 +30,7 @@ export default function ProgramCard({
 	mode,
 	onHoverEnter,
 	onHoverLeave,
+	onCardClick,
 	onRequestGlobalExpand,
 	onRequestCollapseAll,
 }: {
@@ -39,6 +40,7 @@ export default function ProgramCard({
 	mode: "overlay" | "inline";
 	onHoverEnter?: () => void;
 	onHoverLeave?: () => void;
+	onCardClick?: () => void;
 	onRequestGlobalExpand?: () => void;
 	onRequestCollapseAll?: () => void;
 }) {
@@ -48,6 +50,7 @@ export default function ProgramCard({
 
 	return (
 			<Box
+				onClick={onCardClick}
 				sx={{
 					position: "relative",
 					border: 1,
@@ -59,10 +62,16 @@ export default function ProgramCard({
 					borderTopRightRadius: 8,
 					borderBottomLeftRadius: isExpanded && mode === "overlay" ? 0 : 8,
 					borderBottomRightRadius: isExpanded && mode === "overlay" ? 0 : 8,
+					cursor: mode === "overlay" ? "pointer" : "default",
+					transition: "filter 200ms ease, box-shadow 200ms ease",
+					"&:hover": {
+						filter: mode === "overlay" ? "brightness(1.1)" : "none",
+						boxShadow: mode === "overlay" ? 4 : 1,
+					},
 				}}
 			>
 			{/* Collapsed header + first paragraph */}
-			<Box sx={{ p: 2.5 }} onMouseEnter={onHoverEnter} onMouseLeave={onHoverLeave}>
+			<Box sx={{ p: 2.5, position: "relative" }} onMouseEnter={onHoverEnter} onMouseLeave={onHoverLeave}>
 				<Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1, color: "primary.main" }}>
 					<Box component="svg" viewBox="0 0 24 24" sx={{ width: 20, height: 20, flexShrink: 0 }}>
 						<path fill="currentColor" d={item.iconPath} />
@@ -74,6 +83,21 @@ export default function ProgramCard({
 				<Typography variant="body2" color="text.secondary">
 					{firstParagraph}
 				</Typography>
+				{mode === "overlay" && !isExpanded && (
+					<Box
+						sx={{
+							position: "absolute",
+							left: "50%",
+							bottom: 6,
+							transform: "translateX(-50%)",
+							color: "text.secondary",
+							opacity: 0.7,
+							pointerEvents: "none",
+						}}
+					>
+						<KeyboardArrowDownIcon fontSize="small" />
+					</Box>
+				)}
 			</Box>
 
 			{mode === "overlay" && (
