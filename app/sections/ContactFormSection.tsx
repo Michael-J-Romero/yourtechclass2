@@ -116,9 +116,9 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
           Request Program Information
         </Typography>
         <Typography variant="body1" textAlign="center" color="text.secondary" sx={{ mb: 4 }}>
-          Tell me a little about yourself or your student and I’ll recommend the best starting option.
+          Tell us a little about yourself or your student and we’ll recommend the best starting option.
           You can also use this
-          form to contact us about hosting partnerships and new program locations.
+          form to inquire about hosting partnerships.
         </Typography>
 
 
