@@ -65,6 +65,8 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
   });
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -84,15 +86,39 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
     return newErrors;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    setSubmitted(true);
-    setForm({ name: "", email: "", studentAge: "", message: "", inquiryType: "" });
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          interests: selectedInterests,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || "Unable to send message.");
+      }
+
+      setSubmitted(true);
+      setForm({ name: "", email: "", studentAge: "", message: "", inquiryType: "" });
+      setSelectedInterests([]);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to send message.";
+      setSubmitError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   useEffect(() => {
@@ -232,8 +258,9 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
                   fullWidth
                   sx={{ py: 1.5, fontWeight: 700 }}
                   startIcon={<MailIcon />}
+                  disabled={isSubmitting}
                 >
-                  Send Inquiry
+                  {isSubmitting ? "Sending..." : "Send Inquiry"}
                 </Button>
               </Grid>
             </Grid>
@@ -254,6 +281,16 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
       >
         <Alert severity="success" onClose={() => setSubmitted(false)} variant="filled">
           Thank you! We'll be in touch soon.
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={!!submitError}
+        autoHideDuration={6000}
+        onClose={() => setSubmitError(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="error" onClose={() => setSubmitError(null)} variant="filled">
+          {submitError}
         </Alert>
       </Snackbar>
     </Box>
