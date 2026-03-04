@@ -194,7 +194,7 @@ export default function Home() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0.52) 85%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0.62) 85%)",
             zIndex: 1,
           }}
         />
@@ -212,7 +212,8 @@ export default function Home() {
               fontWeight={800}
               gutterBottom
             >
-              Creative Coding Programs for All Ages
+                            Hands-on coding lessons in Los Angeles
+
             </Typography>
             <Typography
               variant="h6"
@@ -227,9 +228,9 @@ export default function Home() {
                 fontWeight: 700,
                 display: "inline-block",
               }}
-            >
-              Students learn by building games and interactive projects in small,
-              supportive environments across Los Angeles.
+            > 
+              All skill levels welcome - for teens and adults across Los Angeles.
+              Students learn by building real games and apps in supportive environments.
             </Typography>
             <Button
               variant="contained"
@@ -243,7 +244,7 @@ export default function Home() {
                 px: 4,
               }}
             >
-              Request Program Info
+                Schedule a free lesson!
             </Button>
           </Box>
         </Container>
@@ -301,7 +302,7 @@ export default function Home() {
               fontWeight={800}
               gutterBottom
             >
-              Creative Coding Programs for Kids & Teens
+              Hands-on coding lessons in Los Angeles.
             </Typography>
           </Container>
         </Box>
@@ -320,8 +321,8 @@ export default function Home() {
               display: "inline-block",
             }}
           >
-            Students learn by building games and interactive projects in small,
-            supportive environments across Los Angeles.
+            All skill levels welcome - for teens and adults across Los Angeles.
+            Students learn by building real games and apps in supportive environments. 
           </Typography>
           <Button
             variant="contained"
@@ -335,7 +336,7 @@ export default function Home() {
               px: 4,
             }}
           >
-            Request Program Info
+              Schedule a free lesson!
           </Button>
         </Container>
       </Box>

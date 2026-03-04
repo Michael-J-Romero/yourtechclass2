@@ -139,12 +139,10 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
     <Box id="contact" sx={{ py: 8, bgcolor: colors.cool }}>
       <Container maxWidth="sm">
         <Typography variant="h3" component="h2" textAlign="center" fontWeight={700} gutterBottom>
-          Request Program Information
+          Let’s Find the Right Program for You
         </Typography>
         <Typography variant="body1" textAlign="center" color="text.secondary" sx={{ mb: 4 }}>
-          Tell us a little about yourself or your student and we’ll recommend the best starting option.
-          You can also use this
-          form to inquire about hosting partnerships.
+          Tell us about your goals and we’ll schedule a free first lesson — no commitment required!
         </Typography>
 
 
@@ -251,6 +249,9 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
                 />
               </Grid>
               <Grid size={{ xs: 12 }}>
+                <Typography variant="body2" textAlign="center" color="text.secondary" sx={{ mb: 1 }}>
+                  Your first lesson is free — no obligation.
+                </Typography>
                 <Button
                   type="submit"
                   variant="contained"
@@ -260,7 +261,7 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
                   startIcon={<MailIcon />}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Sending..." : "Send Inquiry"}
+                  {isSubmitting ? "Sending..." : "Get Started"}
                 </Button>
               </Grid>
             </Grid>
@@ -280,7 +281,7 @@ export default function ContactFormSection({ colors }: ContactFormSectionProps) 
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert severity="success" onClose={() => setSubmitted(false)} variant="filled">
-          Thank you! We'll be in touch soon.
+          We got your message and will respond shortly!
         </Alert>
       </Snackbar>
       <Snackbar

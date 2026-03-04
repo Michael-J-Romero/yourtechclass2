@@ -48,7 +48,7 @@ export default function LocationOutreach({ colors }: LocationOutreachProps) {
 						</Typography>
 
 						<Button href="#contact" variant="contained" size="large" sx={{ mt: 1 }}>
-							Inquire About Programs
+							Inquire About These Programs
 						</Button>
 					</Grid>
 				</Grid>

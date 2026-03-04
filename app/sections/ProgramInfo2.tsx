@@ -56,7 +56,7 @@ const FORMAT_ITEMS = [
 		iconPath: ONE_ON_ONE_ICONS[ONE_ON_ONE_ICON_INDEX],
 		title: "One-on-One Coaching",
 		description:
-			"Personalized sessions for junior high students, high schoolers, and adults. Tailored to each student’s pace and interests — ideal for beginners or students ready to go deeper.\n\nAll ages and experience levels are welcome, including students with special learning needs and ambitious learners aiming for advanced coding outcomes.",
+			"Personalized sessions for junior high students, high schoolers, and adults. Tailored to each student’s pace and interests — ideal for beginners or students ready to go deeper.\n\nAll ages and experience levels are welcome, including students with special learning needs and ambitious learners aiming to build advanced programming skills and projects.",
 		where: ["Los Angeles in-person", "Online / Zoom", "Client's home"],
 		price: "$40/hour",
 	},
@@ -146,7 +146,7 @@ export default function ProgramInfo({ colors }: ProgramInfoProps) {
 						Flexible one-on-one and group lessons in web, app, and game development,
 						tailored to each student's goals, pace, and experience level.
 						All ages and experience levels are welcome, including students with special learning
-						needs and ambitious learners aiming for advanced coding outcomes.
+						needs and ambitious learners aiming to build advanced programming skills and projects. 
 					</Typography>
 
 					{isMobile ? (
@@ -229,7 +229,7 @@ export default function ProgramInfo({ colors }: ProgramInfoProps) {
 						<>
 							<Box sx={{ textAlign: 'center', mt: 3, mb: 1 }}>
 								<Typography variant="subtitle1" component="div" sx={{ color: 'text.primary' }}>
-									Below are some of the <Box component="span" sx={{ fontWeight: 300 }}>subjects</Box> and <Box component="span" sx={{  fontWeight: 300 }}>technologies</Box> you can learn:
+									From beginner platforms like Scratch to real-world technologies like Javascript and Unity:
 								</Typography>
 							</Box>
 							<Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1, mb: 2, justifyContent: 'center' }}>
@@ -244,7 +244,7 @@ export default function ProgramInfo({ colors }: ProgramInfoProps) {
 						<>
 							<Box sx={{ textAlign: 'center', mt: 2, mb: 1 }}>
 								<Typography variant="subtitle1" component="div" sx={{ color: 'text.primary' }}>
-									Below are some of the <Box component="span" sx={{ fontWeight: 300 }}>subjects</Box> and <Box component="span" sx={{  fontWeight: 300 }}>technologies</Box> you can learn:
+									From beginner platforms like Scratch to real-world technologies like Javascript and Unity:
 								</Typography>
 							</Box>
 							<Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1, mb: 2, justifyContent: 'center' }}>
